@@ -1,104 +1,196 @@
 
 <?php
-/**
-* 
+/*	for($i = 1, $j = 0; $j >= 10 && $i <= 50; $j += $i, print $i, $i++) {
+echo "i = ". $i."</br> $j = ".$j;
+}
 */
+//
+//-----------------------------------------------------------------------------------------
+// -- Статические поля класса
+/*
+class Member {
+
+ private $username;
+ private $location;
+ private $homepage;
+ public static $numMember; //static (self::$numMember) - сохраняют значения между вызовами функции
+
+ public function __construct( $username, $location, $homepage ) {
+   
+   self::$numMember++;
+   $this->username = $username;
+   $this->location = $location;
+   $this->homepage = $homepage;  
+ }
+ 
+ public function showProfile() {
+   echo "<dl>";
+   echo "<dt>numMember:</dt><dd>".Member::$numMember."</dd>";
+   echo "<dt>Username:</dt><dd>$this->username</dd>";
+   echo "<dt>Location:</dt><dd>$this->location</dd>";
+   echo "<dt>Homepage:</dt><dd>$this->homepage</dd>";
+   echo "</dl>";
+ }
+}
+
+$aMember = new Member( "fred", "Chicago", "http://example.com/" );
+$aMember->showProfile();
+$aMember2 = new Member( "Lyke", "Chicago", "http://example.com/" );
+$aMember2->showProfile();
+*/
+//-------------------------------------------------------------------------------------
+//Статические методы
+/*
+class Member {
+
+ private $username;
+ private $location;
+ private $homepage;
+ public static $numMember; //static (self::$numMember) - сохраняют значения между вызовами функции
+
+ public function __construct( $username, $location, $homepage ) {
+   
+   self::$numMember++;
+   $this->username = $username;
+   $this->location = $location;
+   $this->homepage = $homepage;  
+ }
+ public static function  getNum(){
+ 	return self::$numMember;
+ }
+ public function showProfile() {
+   echo "<dl>";
+   echo "<dt>Username:</dt><dd>$this->username</dd>";
+   echo "<dt>Location:</dt><dd>$this->location</dd>";
+   echo "<dt>Homepage:</dt><dd>$this->homepage</dd>";
+   echo "</dl>";
+ }
+}
+
+$aMember = new Member( "fred", "Chicago", "http://example.com/" );
+echo "<dt>numMember:</dt><dd>".Member::getNum()."</dd>";
+$aMember->showProfile();
+$aMember2 = new Member( "Lyke", "Chicago", "http://example.com/" );
+echo "<dt>numMember:</dt><dd>".Member::getNum()."</dd>";
+$aMember2->showProfile();
+*/
+//
+//--------------------------------------------------------------------------------------
+//Константы класса
+/*
+class Member {
+
+ const MEMBER = 1;
+ const MODERATOR = 2;
+ const ADMINISTRATOR = 3;
+
+ private $username;
+ private $level;
+
+ public function __construct( $username, $level ) {
+   $this->username = $username;
+   $this->level = $level;
+ }
+
+ public function getUsername() {
+   return $this->username;
+ }
+
+ public function getLevel() {
+   if ($this->level == self::MEMBER) return "member member"; 
+   if ( $this->level == self::MODERATOR ) return "a moderator";
+   if ( $this->level == self::ADMINISTRATOR ) return "an administrator";
+   return "unknown";
+ }
+}
+
+$aMember = new Member( "fred", Member::MEMBER );
+$anotherMember = new Member( "mary", Member::ADMINISTRATOR );
+echo $aMember->getUsername() . " is " . $aMember->getLevel() . "<br>";  // отобразит "fred is a member"
+echo $anotherMember->getUsername() . " is " . $anotherMember->getLevel() . "<br>";  // отобразит "mary is an administrator"
+*/
+//----------------------------------------------------------------------------------------------------
+//Явное указание типов аргументов функций 
+/*
+
 class Member
 {
-	const MEMBER = 1;
-	const MODERATOR = 2;
-	const ADMIN = 3;
-	private $level;
 	private $username;
-	private $location;
-	private $homepage;
-	//public static $numMembers = 0; // пример 1
-	private static $numMembers = 0;
-
-	function __construct($username, $location, $homepage, $level)
+	function __construct($a_username)
 	{
-		$this->username = $username;
-		$this->location = $location;
-		$this->homepage = $homepage;
-		$this->level = $level;		
-		self::$numMembers++;
+		$this->username = $a_username;
 	}
-	private function getLevel()
+	public function getUsername()
 	{
-		if ($this->level == self::MEMBER) return "a member</br>";
-		if ($this->level == Member::MODERATOR) return "a moderator</br>";
-		if ($this->level == Member::ADMIN) return "a admin</br>";
-		return "unknow";
-	}
-	function showProfile()
-	{
-		echo "<dl>";
-		echo "<dt>Num members:</dt><dd>". $this->getNumMembers(). "</dd>";
-		echo "<dt>Username:</dt><dd>$this->username</dd>";
-		echo "<dt>Location:</dt><dd>$this->location</dd>";
-		echo "<dt>Homepage:</dt><dd>$this->homepage</dd>";
-		echo "<dt>Level:</dt><dd>". $this->getLevel() . "</dd>";
-		echo "</dl></br>";
-	}
-        public function getUserName()
-        {
-            return $this->username;
-        }
-
-        public function getNumMembers()
-	{
-		return self::$numMembers;
-	}
-
-	function __destruct()
-	{
-		//echo "</br> Object is kill";
+		return $this->username;
 	}
 }
-/**
-* 
-*/
+
+class Wiget
+{
+	private $color;
+	function __construct($a_color)
+	{
+		$this->color = $a_color;
+	}
+	 public function getColour() {
+	return $this->colour;
+ }
+
+}
+
 class Topic
 {
-    private $members;
-    private $subject;
-    
-    public function __construct($members,$subject)
-    {
-      $this->members = $members;
-      $this->subject = $subject;
-    }
-    public function getUserNaeme()
-    {
-        return $this->members->getUserName();
-    }
+	private $member;
+	private $content;
+	//function __construct($a_member,$a_content)
+	function __construct(Member $a_member, $a_content) // явно указать объект какого класса получать
+	{
+		$this->member = $a_member;
+		$this->content = $a_content;
+	}
+	
+	public function getUsernameTopic()
+	{
+		return $this->member->getUsername();
+	}
 }
-
-
-/* Пример 1
-echo Member::numMembers . "</br>";
-$mem = new Member ("Fred", "Chicago", "example.com");
-$mem->showProfile();
-echo Member::$numMembers . "</br>";
-$mem = new Member ("Lili", "Chicago", "example.com");
-$mem->showProfile();
-echo Member::$numMembers . "</br>";
+$wig = new Wiget("Blue");
+$mem = new Member("Lucas");
+$top = new Topic($mem,"text");
+echo $top->getUsernameTopic()." ";
 */
-echo " ". Member::getNumMembers() . "</br>";
-$mem = new Member ("Fred", "Chicago", "example.com", Member::MEMBER);
-$mem->showProfile();
-
-$mem = new Member ("lili", "Chicago", "example.com", Member::MODERATOR);
-//$mem->showProfile();
-
-$mem = new Member ("Edy", "Chicago", "example.com", Member::ADMIN);
-//$mem->showProfile();
-
-$mem = new Member ("Noel", "Chicago", "example.com",NULL);
-//$mem->showProfile();
-
-$topic = new Topic ($mem, "hi hi hi");
-echo $topic->getUserNaeme();
+//------------------------------------------------------------------------------------------------
+//Инициализация и чтение значений полей класса при помощи __get() и __set()
+//
+class Member
+{
+	private $username;
+	private $data = array();
+	public function __get($property)
+	{
+		if ($property == "username") {
+			return $this->username;
+		} else {
+			if (array_key_exists($property, $this->data)) {
+				return $this->data[$property];
+			} else {
+				return null;
+			}
+		}
+	}
+	public function __set($property, $value)
+	{
+		if ($property == "username") {
+			$this->username = $value;
+	} else {
+		$this->data[$property] = $value;
+	}
+	}
+}
+$aMember = new Member();
+$aMember->username = "fred";
+$aMember->location = "San Francisco";
+echo $aMember->username . "<br>";  // отобразит "fred"
+echo $aMember->location . "<br>";  // отобразит "San Francisco"
 ?>
-
-1111111111111
